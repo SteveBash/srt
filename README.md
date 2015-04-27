@@ -3,10 +3,11 @@
 
 * Compilar 
 
-       make 
+        make 
 
 * Ejecutar los ejemplos 
 
-       ./srt < ej1.txt 
-       ./srt < ej2.txt
+        ./srt < ej1.txt 
+
+        ./srt < ej2.txt
 
