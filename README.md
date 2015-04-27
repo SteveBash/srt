@@ -1,4 +1,6 @@
  
+# Detalles del proyecto 
+
 * Compilar 
 
        make 
