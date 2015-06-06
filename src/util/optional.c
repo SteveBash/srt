@@ -20,14 +20,3 @@ int Optional_is_present(Optional o){
         return 1;
 }
 
-int main(int argc, char **argv){
-    int i = 0;
-    Optional op = Optional_of(i);
-    if(Optional_is_present(op))
-        printf("%d\n", Optional_get(op));
-    else
-        printf("%d\n", Optional_absent().pid);
-    return 0;
-}
-
-

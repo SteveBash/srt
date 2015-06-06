@@ -38,23 +38,3 @@ Optional dequeue(Queue *q){
         return Optional_absent();
 }
 
-/*int main(int argc, char **argv){*/
-     /*Queue *q = create_queue();*/
-     /*enqueue(q, 1);*/
-     /*enqueue(q, 2);*/
-     /*enqueue(q, 3);*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*enqueue(q, 1);*/
-     /*enqueue(q, 2);*/
-     /*enqueue(q, 3);*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*printf("%d\n", Optional_get(dequeue(q)));*/
-     /*return 0;*/
-/*}*/
-
-
