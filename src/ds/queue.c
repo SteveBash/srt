@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include "../util/optional.h"
 #include "queue.h"
 
 Queue *create_queue(){
@@ -16,7 +13,7 @@ int queue_empty(const Queue *q){
    return q->end==NULL; 
 }
 
-void enqueue(Queue *q, int pid){
+void enqueue(Queue *q, char pid){
     Queue_el *qel = malloc(sizeof(Queue_el)); 
     qel->pid = pid;
     qel->next = NULL;
@@ -29,12 +26,12 @@ void enqueue(Queue *q, int pid){
      }
 }
 
-Optional dequeue(Queue *q){
+char dequeue(Queue *q){
     if(!queue_empty(q)){ 
-        int res = q->end->pid;
+        char res = q->end->pid;
         q->end = q->end->next;
-        return Optional_of(res);
+        return res;
     }else
-        return Optional_absent();
+        return '*'; //Elemento nulo
 }
 

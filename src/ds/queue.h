@@ -1,21 +1,19 @@
 #ifndef _queue_h
 #define _queue_h
 
-struct Queue_el{
-    int pid;          
+typedef struct Queue_el{
+    char pid;          
     struct Queue_el *next;
-};
+}Queue_el;
 
-typedef struct Queue_el Queue_el;
-
-typedef struct{
+typedef struct Queue{
     Queue_el *front; 
     Queue_el *end; 
-} Queue;
+}Queue;
 
 Queue *create_queue();
 int queue_empty(const Queue *q);
-void enqueue(Queue *q, int pid);
-Optional dequeue(Queue *q);
+void enqueue(Queue *q, char pid);
+char dequeue(Queue *q);
 
 #endif
