@@ -5,8 +5,8 @@
 
 Queue *create_queue(){
     Queue *q = malloc(sizeof(Queue));
-    q->front= NULL; 
-    q->end= NULL; 
+    q->front = NULL; 
+    q->end = NULL; 
     return q;
 }
 
@@ -25,6 +25,13 @@ void enqueue(Queue *q, char pid){
         q->front->next = qel; 
         q->front = q->front->next;
      }
+}
+
+void enqueue_all(Queue *q, char* pids, int size){
+	int i;
+	for(i=0; i<size; i++){
+		enqueue(q, pids[i]);	
+	}
 }
 
 char dequeue(Queue *q){

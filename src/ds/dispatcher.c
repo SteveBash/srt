@@ -5,79 +5,113 @@
 #include "instant.c"
 #include "process.c"
 
-int timer = 0;
-int processes_total;
+int time = -1;
 
-Instant instants[100];
-Process processes[20];
-
-void order_processes_by_arrival(){
-	int i, j;
-	Process temp;
-
-	for(i = processes_total - 1; i > 0; i--) {
-		for(j=0; j < i; j++) {
-			if((processes[j].arrival_time) > (processes[j+1].arrival_time)){
-				temp = processes[j];
-				processes[j] = processes[j+1];
-				processes[j+1] = temp;
-			}
-		}
-	}
-}
-
-void get_processes_from_input(){
-	int i;
-	puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");
+void get_processes_from_input(Process* processes){
+	int i, processes_total;
 	puts("Ingrese numero de procesos: ");
 	scanf("%d", &processes_total);
 	for(i=0; i<processes_total; i++) {
-		printf("Nombre de proceso(Max 1 caracter): ");
-		scanf("%c", &processes[i].pid);
-		printf("Tiempo de llegada de %c: ", processes[i].pid);
+		puts("\nNombre de proceso(Solo letras en mayusculas): ");
+		scanf("\n%c", &processes[i].pid);
+		printf("\nTiempo de llegada de %c: ", processes[i].pid);
 		scanf("%d", &processes[i].arrival_time);
-		printf("Nro de rafagas de cpu de %c: ", processes[i].pid);
+		printf("\nNro de rafagas de cpu de %c: ", processes[i].pid);
 		scanf("%d", &processes[i].burst_time);
-
 	}
 }
 
-void print_processes(){
-	int i=0;
-	printf("\n\nNombre\tLlegada\tRafagas\n");
-	for(i=0; i< processes_total; i++) {
-		printf("\n%c\t%d\t%d", processes[i].pid, processes[i].arrival_time, processes[i].burst_time);
+//Llamar a free luego de usar la funcion
+int* get_arrived_processes(Process* processes, int time){
+	int i=0, j=0, k;
+	int* indexes=malloc(26*sizeof(int));
+	for(k=0; k<26;k++) indexes[k]=-1;	
+	while(processes[i].pid!='*'){
+		if(processes[i].arrival_time==time){
+			indexes[j] = i;
+			j++;
+		}
+		i++;
 	}
-	order_processes_by_arrival(processes, processes_total);
-	puts("\n");
+	return indexes;
 }
 
-
-//Queue init = aadsf
-//int clock = 0;
-
-void insert_in_ready_queue(){
-   //modify Queue state 
+int has_a_process_arrived(int* indexes){
+	if(indexes[0] != -1)
+		return 1;
+	else
+		return 0;
 }
 
-void time_passes(){
-    //if arrived
-    //insert in ready queue
-    //scheduling()
-    //clock++
-    //else
-    //clock++
+int has_process_terminated(PCB* process_table, char pid){
+	PCB pcb = get_from_process_table(process_table, pid);
+	return pcb.state == TERMINATED? 1:0;
 }
 
-void scheduling(){
-    //dequeue all in ready queue
-    //srt(ready_queue)
-    //construct_pcb()
+int is_process_executing(PCB* process_table, char pid){
+	PCB pcb = get_from_process_table(process_table, pid);
+	return pcb.state == RUNNING? 1:0;
 }
 
-char srt(Queue *q){
+void execute(PCB* process_table, char pid){
+	PCB pcb = get_from_process_table(process_table, pid);
+	pcb.proc.burst_time--;
+	if(pcb.proc.burst_time == 0)
+		pcb.state = TERMINATED;
+}
+
+char srt(PCB* process_table, Queue *q){
+	int min = 1000, proc_burst, counter=0;
+	char pid = '*';
+	char* pids = malloc(26*sizeof(int));
 	while(!queue_empty(q)){
-		dequeue(q);	
+		pid = dequeue(q);
+		pids[counter] = pid;
+		proc_burst = get_from_process_table(process_table, pid).proc.burst_time;
+		if(proc_burst < min){
+			min = proc_burst;
+		}
+		counter++;
 	}
+	enqueue_all(q, pids, counter);
+	return pid;
 }
+
+/*void scheduling(){*/
+	/*time++;*/
+	/*while(time<=30){*/
+		/*int *indexes = get_arrived_processes(processes, time);*/
+		/*char pid;*/
+		/*if(has_a_process_arrived(indexes)){*/
+			/*insert_in_process_table(process_table, processes[indexes]);*/
+			/*enqueue(queue, processes[indexes].pid);*/
+			/*pid = srt(queue);*/
+			/*execute(process_table, pid);*/
+			/*add_instant(instants, pid, time);*/
+		/*}else if(has_process_terminated(pid)){*/
+			/*pid = srt(queue);*/
+			/*execute(process_table, pid);*/
+			/*add_instant(instants, pid, time);*/
+		/*}else if(is_process_executing(pid)){*/
+			/*execute(process_table, pid);	*/
+			/*add_instant(instants, pid, time);*/
+		/*}else{//No hay proceso por ejecutar*/
+			/*execute(process_table, pid);	*/
+			/*add_instant(instants, ' ', time);*/
+		/*}*/
+	/*}*/
+/*}*/
+
+/*int main(){*/
+	/*puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");*/
+	/*Instant instants[100];*/
+	/*Process processes[26];*/
+	/*init_processes(processes, 26);*/
+	/*get_processes_from_input(processes);*/
+	/*int *asdf = get_arrived_processes(processes, 0);*/
+	/*int c;*/
+	/*for(c=0; c<26; c++)*/
+		/*printf("%d\n", asdf[c]);*/
+/*}*/
+
 

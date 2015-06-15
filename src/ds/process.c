@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define EMPTY_PCB { .proc = { .pid = '*', .arrival_time= -1, .burst_time = -1}, .state= TERMINATED, .turnaround_time = -1, .response_time = -1, .waiting_time = -1}
+#define EMPTY_PROCESS { .pid = '*', .arrival_time= -1, .burst_time = -1}
 
 typedef struct Process{
     char pid;
@@ -9,10 +10,43 @@ typedef struct Process{
     int burst_time;
 }Process;
 
+void init_processes(Process* processes, int size){	
+	int i;
+	Process init_process = EMPTY_PROCESS;
+	for(i = 0; i < size; i++)processes[i] = init_process;	
+}
+
+void order_processes_by_arrival(Process* processes){
+	int i, j, size=0;
+	Process temp;
+	while(processes[size].pid!='*'){
+		size++;	
+	}
+	for(i = size- 1; i > 0; i--) {
+		for(j=0; j < i; j++) {
+			if((processes[j].arrival_time) > (processes[j+1].arrival_time)){
+				temp = processes[j];
+				processes[j] = processes[j+1];
+				processes[j+1] = temp;
+			}
+		}
+	}
+}
+
+void print_processes(Process* processes){
+	int i=0;
+	printf("\n\nNombre\tLlegada\tRafagas\n");
+	while(processes[i].pid!='*'){
+		printf("\n%c\t%d\t%d", processes[i].pid, processes[i].arrival_time, processes[i].burst_time);
+		i++;
+	}
+	puts("\n");
+}
+
 typedef enum process_state{
    READY = 'Y', 
    RUNNING= 'R', 
-   TERMINATED = 'T' 
+   TERMINATED = 'T'
 }process_state;
 
 typedef struct PCB{
@@ -23,36 +57,53 @@ typedef struct PCB{
     int waiting_time;
 }PCB;
 
+/*
+ * Process table es una tabla hash implementanda con un vector disperso sin colisiones
+*/
 void init_process_table(PCB *process_table, int size){	
 	int i;
 	PCB init_pcb = EMPTY_PCB;
 	for(i = 0; i < size; i++)process_table[i] = init_pcb;	
 }
 
-void process_table_add_PCB(PCB *process_table, Process proc, process_state state, int turnaround_time, int response_time, int waiting_time, int index){
-	PCB pcb = { .proc = proc, .state = state, .turnaround_time = turnaround_time, .response_time = response_time, .waiting_time = waiting_time}; 
+int hash(char pid){		
+	return pid - 64;
+}
+
+void insert_in_process_table(PCB* process_table, Process proc){
+	PCB pcb = { .proc = proc, .state = READY, .turnaround_time = -1, .response_time = -1, .waiting_time = -1}; 
+	int index = hash(proc.pid);
 	process_table[index] = pcb;
 }
 
-PCB process_table_get_PCB(PCB *process_table, int size, char pid){
-	int i;
-	PCB pcb, empty_pcb=EMPTY_PCB;
-	for(i=0; i < size; i++) if(process_table[i].proc.pid==pid)pcb = process_table[i];
-	return pcb;
+PCB get_from_process_table(PCB* process_table, char pid){
+	int index = hash(pid);
+	return process_table[index];
 }
 
 /*int main(){*/
-	/*PCB pt[100];*/
-	/*init_process_table(pt, 100);*/
+	/*Process processes[100];*/
+	/*init_processes(processes, 100);*/
+	/*processes[0] = (Process){ .pid = 'A', .arrival_time = 2, .burst_time = 4};*/
+	/*processes[1] = (Process){ .pid = 'B', .arrival_time = 1, .burst_time = 2};*/
+	/*processes[2] = (Process){ .pid = 'C', .arrival_time = 0, .burst_time = 5};*/
+	/*order_processes_by_arrival(processes);*/
+	/*print_processes(processes);*/
+	/*return 0;*/
+/*}*/
+
+/*int main(){*/
+	/*PCB process_table[26];*/
+	/*init_process_table(process_table, 26);*/
 	/*Process p1 = { .pid = 'A', .arrival_time = 0, .burst_time = 4};*/
 	/*Process p2 = { .pid = 'B', .arrival_time = 1, .burst_time = 2};*/
 	/*Process p3 = { .pid = 'C', .arrival_time = 2, .burst_time = 5};*/
-	/*process_table_add_PCB(pt, p1, READY, 0, 0, 0, 0);*/
-	/*process_table_add_PCB(pt, p2, READY, 0, 0, 0, 1);*/
-	/*process_table_add_PCB(pt, p3, READY, 0, 0, 0, 2);*/
-	/*printf("%d\n", process_table_get_PCB(pt, 100, 'A').proc.burst_time);*/
-	/*printf("%d\n", process_table_get_PCB(pt, 100, 'B').proc.burst_time);*/
-	/*printf("%d\n", process_table_get_PCB(pt, 100, 'C').proc.burst_time);*/
+	/*insert_in_process_table(process_table, p1);*/
+	/*insert_in_process_table(process_table, p2);*/
+	/*insert_in_process_table(process_table, p3);*/
+	/*printf("%d\n", get_from_process_table(process_table, 'A').proc.burst_time);*/
+	/*printf("%d\n", get_from_process_table(process_table, 'B').proc.burst_time);*/
+	/*printf("%d\n", get_from_process_table(process_table, 'C').proc.burst_time);*/
 	/*return 0;*/
 /*}*/
 

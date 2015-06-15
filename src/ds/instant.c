@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define EMPTY_INSTANT { .pid = '*', .time= -1}
+
 struct Instant{
     char pid;
     int time;
@@ -9,19 +11,19 @@ struct Instant{
 
 typedef struct Instant Instant;
 
-void add_instant_to_clock(Instant *clock, char pid, int index){
+void add_instant(Instant *instants, char pid, int index){
 	Instant i = { .pid = pid, .time = index};
-	clock[index] = i;
+	instants[index] = i;
 }
 
-void init_clock(Instant *clock, int size){
-	Instant i = { .pid = '*', .time = -1};
-	int c; for(c=0; c<size; c++)clock[c] = i;	
+void init_instants(Instant *instants, int size){
+	Instant i = EMPTY_INSTANT;
+	int c; for(c=0; c<size; c++)instants[c] = i;	
 }
 
 /*int main(){*/
 	/*Instant clock[100];	*/
-	/*init_clock(clock, 100);*/
+	/*init_instants(clock, 100);*/
 	/*add_instant(clock, 'A', 0);*/
 	/*add_instant(clock, 'B', 1);*/
 	/*add_instant(clock, 'C', 2);*/
