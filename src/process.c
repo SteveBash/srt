@@ -67,7 +67,7 @@ void init_process_table(PCB *process_table, int size){
 }
 
 int hash(char pid){		
-	return pid - 64;
+	return pid - 65;
 }
 
 void insert_in_process_table(PCB* process_table, Process proc){
@@ -81,6 +81,16 @@ PCB get_from_process_table(PCB* process_table, char pid){
 	return process_table[index];
 }
 
+void print_process_table(PCB *process_table, int size){
+	int i=0;
+	printf("\nNombre\tLlegada\tDuracion\tT.Ret.\tT.Resp.\tT.Esp.\n");
+	while(i<size){
+		printf("\n%c\t%d\t%d\t\t%d\t%d\t%d", process_table[i].proc.pid, process_table[i].proc.arrival_time, process_table[i].proc.burst_time, process_table[i].turnaround_time, process_table[i].response_time, process_table[i].waiting_time);
+		i++;
+	}
+	puts("\n");
+}
+
 /*int main(){*/
 	/*Process processes[100];*/
 	/*init_processes(processes, 100);*/
@@ -92,18 +102,19 @@ PCB get_from_process_table(PCB* process_table, char pid){
 	/*return 0;*/
 /*}*/
 
-/*int main(){*/
-	/*PCB process_table[26];*/
-	/*init_process_table(process_table, 26);*/
-	/*Process p1 = { .pid = 'A', .arrival_time = 0, .burst_time = 4};*/
-	/*Process p2 = { .pid = 'B', .arrival_time = 1, .burst_time = 2};*/
-	/*Process p3 = { .pid = 'C', .arrival_time = 2, .burst_time = 5};*/
-	/*insert_in_process_table(process_table, p1);*/
-	/*insert_in_process_table(process_table, p2);*/
-	/*insert_in_process_table(process_table, p3);*/
-	/*printf("%d\n", get_from_process_table(process_table, 'A').proc.burst_time);*/
-	/*printf("%d\n", get_from_process_table(process_table, 'B').proc.burst_time);*/
-	/*printf("%d\n", get_from_process_table(process_table, 'C').proc.burst_time);*/
-	/*return 0;*/
-/*}*/
+int main(){
+    PCB process_table[26];
+    init_process_table(process_table, 26);
+    Process p1 = { .pid = 'A', .arrival_time = 0, .burst_time = 4};
+    Process p2 = { .pid = 'B', .arrival_time = 1, .burst_time = 2};
+    Process p3 = { .pid = 'C', .arrival_time = 2, .burst_time = 5};
+    insert_in_process_table(process_table, p1);
+    insert_in_process_table(process_table, p2);
+    insert_in_process_table(process_table, p3);
+    printf("%d\n", get_from_process_table(process_table, 'A').proc.burst_time);
+    printf("%d\n", get_from_process_table(process_table, 'B').proc.burst_time);
+    printf("%d\n", get_from_process_table(process_table, 'C').proc.burst_time);
+    print_process_table(process_table, 3);
+    return 0;
+}
 

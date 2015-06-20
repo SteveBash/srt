@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "queue.h"
+#include "queue.c"
 #include "instant.c"
 #include "process.c"
 
@@ -102,15 +102,39 @@ char srt(PCB* process_table, Queue *q){
 /*}*/
 
 /*int main(){*/
-	/*puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");*/
-	/*Instant instants[100];*/
-	/*Process processes[26];*/
-	/*init_processes(processes, 26);*/
-	/*get_processes_from_input(processes);*/
-	/*int *asdf = get_arrived_processes(processes, 0);*/
-	/*int c;*/
-	/*for(c=0; c<26; c++)*/
-		/*printf("%d\n", asdf[c]);*/
+    /*puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");*/
+    /*Instant instants[100];*/
+    /*Process processes[26];*/
+    /*init_processes(processes, 26);*/
+    /*get_processes_from_input(processes);*/
+    /*order_processes_by_arrival(processes);*/
+    /*print_processes(processes);*/
+    /*int *asdf = get_arrived_processes(processes, 0);*/
+    /*int c;*/
+    /*for(c=0; c<26; c++)*/
+        /*printf("%d\n", asdf[c]);*/
 /*}*/
 
+int main(){
+    puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");
+    int i;
+    Instant instants[100];
+    Process processes[26];
+    PCB process_table[26];
+    init_processes(processes, 26);
+    init_process_table(process_table, 26);
+    Queue *queue = create_queue();
+
+    get_processes_from_input(processes);
+    order_processes_by_arrival(processes);
+    print_processes(processes);
+    for(i=0; i<4; i++){
+        insert_in_process_table(process_table, processes[i]); 
+        enqueue(queue, processes[i].pid);;
+    }
+    /*int *asdf = get_arrived_processes(processes, 0);*/
+    /*int c;*/
+    /*for(c=0; c<26; c++)*/
+        /*printf("%d\n", asdf[c]);*/
+}
 

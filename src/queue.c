@@ -1,7 +1,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "queue.h"
+
+typedef struct Queue_el{
+    char pid;          
+    struct Queue_el *next;
+}Queue_el;
+
+typedef struct Queue{
+    Queue_el *front; 
+    Queue_el *end; 
+}Queue;
+
+Queue *create_queue();
+int queue_empty(const Queue *q);
+void enqueue(Queue *q, char pid);
+char dequeue(Queue *q);
+Queue *copy(Queue *q);
 
 Queue *create_queue(){
     Queue *q = malloc(sizeof(Queue));
@@ -68,17 +83,10 @@ Queue *copy(Queue *q){
      /*printf("%c\n", dequeue(copy_q));*/
      /*printf("%c\n", dequeue(copy_q));*/
      /*printf("%c\n", dequeue(copy_q));*/
-
      /*printf("%c\n", dequeue(q));*/
      /*printf("%c\n", dequeue(q));*/
      /*printf("%c\n", dequeue(q));*/
      /*printf("%c\n", dequeue(q));*/
-     /*[>enqueue(q, 1);<]*/
-     /*[>enqueue(q, 2);<]*/
-     /*[>enqueue(q, 3);<]*/
-     /*[>printf("%d\n", Optional_get(dequeue(q)));<]*/
-     /*[>printf("%d\n", Optional_get(dequeue(q)));<]*/
-     /*[>printf("%d\n", Optional_get(dequeue(q)));<]*/
      /*return 0;*/
 /*}*/
 

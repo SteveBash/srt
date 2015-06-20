@@ -15,5 +15,6 @@ Queue *create_queue();
 int queue_empty(const Queue *q);
 void enqueue(Queue *q, char pid);
 char dequeue(Queue *q);
+Queue *copy(Queue *q);
 
 #endif
