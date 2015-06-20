@@ -27,13 +27,6 @@ void enqueue(Queue *q, char pid){
      }
 }
 
-void enqueue_all(Queue *q, char* pids, int size){
-	int i;
-	for(i=0; i<size; i++){
-		enqueue(q, pids[i]);	
-	}
-}
-
 char dequeue(Queue *q){
     if(!queue_empty(q)){ 
         char res = q->end->pid;
@@ -42,4 +35,50 @@ char dequeue(Queue *q){
     }else
         return '*'; //Elemento nulo
 }
+
+Queue *copy(Queue *q){
+    if(!queue_empty(q)){
+        Queue *copy_q = malloc(sizeof(Queue));
+        Queue_el *qel = malloc(sizeof(Queue_el)); 
+        qel->pid = q->end->pid;
+        qel->next = NULL;
+        copy_q->end = qel;
+        copy_q->front = qel;
+        Queue_el *second_qel = q->end->next;
+        while(second_qel!=NULL){
+            Queue_el *next_qel = malloc(sizeof(Queue_el)); 
+            next_qel->pid = second_qel->pid;
+            next_qel->next= NULL;
+            copy_q->front->next = next_qel;
+            copy_q->front = copy_q->front->next;
+            second_qel = second_qel->next;
+        }
+        return copy_q;
+    }
+    else return NULL;
+}
+
+/*int main(int argc, char **argv){*/
+     /*Queue *q = create_queue();*/
+     /*enqueue(q, '1');*/
+     /*enqueue(q, '2');*/
+     /*enqueue(q, '3');*/
+     /*Queue *copy_q = copy(q);*/
+     /*printf("%c\n", dequeue(copy_q));*/
+     /*printf("%c\n", dequeue(copy_q));*/
+     /*printf("%c\n", dequeue(copy_q));*/
+     /*printf("%c\n", dequeue(copy_q));*/
+
+     /*printf("%c\n", dequeue(q));*/
+     /*printf("%c\n", dequeue(q));*/
+     /*printf("%c\n", dequeue(q));*/
+     /*printf("%c\n", dequeue(q));*/
+     /*[>enqueue(q, 1);<]*/
+     /*[>enqueue(q, 2);<]*/
+     /*[>enqueue(q, 3);<]*/
+     /*[>printf("%d\n", Optional_get(dequeue(q)));<]*/
+     /*[>printf("%d\n", Optional_get(dequeue(q)));<]*/
+     /*[>printf("%d\n", Optional_get(dequeue(q)));<]*/
+     /*return 0;*/
+/*}*/
 

@@ -5,6 +5,8 @@
 #include "instant.c"
 #include "process.c"
 
+#define MAX_TIME 30
+
 int time = -1;
 
 void get_processes_from_input(Process* processes){
@@ -61,45 +63,42 @@ void execute(PCB* process_table, char pid){
 }
 
 char srt(PCB* process_table, Queue *q){
-	int min = 1000, proc_burst, counter=0;
-	char pid = '*';
-	char* pids = malloc(26*sizeof(int));
-	while(!queue_empty(q)){
-		pid = dequeue(q);
-		pids[counter] = pid;
+    Queue *copy_q = copy(q);
+	int min = 1000, proc_burst;
+    char pid;
+	while(!queue_empty(copy_q)){
+		pid = dequeue(copy_q);
 		proc_burst = get_from_process_table(process_table, pid).proc.burst_time;
 		if(proc_burst < min){
 			min = proc_burst;
 		}
-		counter++;
 	}
-	enqueue_all(q, pids, counter);
 	return pid;
 }
 
 /*void scheduling(){*/
-	/*time++;*/
-	/*while(time<=30){*/
-		/*int *indexes = get_arrived_processes(processes, time);*/
-		/*char pid;*/
-		/*if(has_a_process_arrived(indexes)){*/
-			/*insert_in_process_table(process_table, processes[indexes]);*/
-			/*enqueue(queue, processes[indexes].pid);*/
-			/*pid = srt(queue);*/
-			/*execute(process_table, pid);*/
-			/*add_instant(instants, pid, time);*/
-		/*}else if(has_process_terminated(pid)){*/
-			/*pid = srt(queue);*/
-			/*execute(process_table, pid);*/
-			/*add_instant(instants, pid, time);*/
-		/*}else if(is_process_executing(pid)){*/
-			/*execute(process_table, pid);	*/
-			/*add_instant(instants, pid, time);*/
-		/*}else{//No hay proceso por ejecutar*/
-			/*execute(process_table, pid);	*/
-			/*add_instant(instants, ' ', time);*/
-		/*}*/
-	/*}*/
+    /*time++;*/
+    /*while(time<=MAX_TIME){*/
+        /*int *indexes = get_arrived_processes(processes, time);*/
+        /*char pid;*/
+        /*if(has_a_process_arrived(indexes)){*/
+            /*insert_in_process_table(process_table, processes[indexes]);*/
+            /*enqueue(queue, processes[indexes].pid);*/
+            /*pid = srt(queue);*/
+            /*execute(process_table, pid);*/
+            /*add_instant(instants, pid, time);*/
+        /*}else if(has_process_terminated(pid)){*/
+            /*pid = srt(queue);*/
+            /*execute(process_table, pid);*/
+            /*add_instant(instants, pid, time);*/
+        /*}else if(is_process_executing(pid)){*/
+            /*execute(process_table, pid);	*/
+            /*add_instant(instants, pid, time);*/
+        /*}else{No hay proceso por ejecutar*/
+            /*execute(process_table, pid);	*/
+            /*add_instant(instants, ' ', time);*/
+        /*}*/
+    /*}*/
 /*}*/
 
 /*int main(){*/
