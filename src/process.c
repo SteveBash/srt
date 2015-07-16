@@ -12,8 +12,7 @@ typedef struct Process{
 
 void init_processes(Process* processes, int size){	
 	int i;
-	Process init_process = EMPTY_PROCESS;
-	for(i = 0; i < size; i++)processes[i] = init_process;	
+	for(i = 0; i < size; i++)processes[i] = (Process)EMPTY_PROCESS;	
 }
 
 void order_processes_by_arrival(Process* processes){
@@ -92,8 +91,8 @@ void print_process_table(PCB *process_table, int size){
 }
 
 /*int main(){*/
-	/*Process processes[100];*/
-	/*init_processes(processes, 100);*/
+	/*Process processes[26];*/
+	/*init_processes(processes, 26);*/
 	/*processes[0] = (Process){ .pid = 'A', .arrival_time = 2, .burst_time = 4};*/
 	/*processes[1] = (Process){ .pid = 'B', .arrival_time = 1, .burst_time = 2};*/
 	/*processes[2] = (Process){ .pid = 'C', .arrival_time = 0, .burst_time = 5};*/
@@ -102,19 +101,19 @@ void print_process_table(PCB *process_table, int size){
 	/*return 0;*/
 /*}*/
 
-int main(){
-    PCB process_table[26];
-    init_process_table(process_table, 26);
-    Process p1 = { .pid = 'A', .arrival_time = 0, .burst_time = 4};
-    Process p2 = { .pid = 'B', .arrival_time = 1, .burst_time = 2};
-    Process p3 = { .pid = 'C', .arrival_time = 2, .burst_time = 5};
-    insert_in_process_table(process_table, p1);
-    insert_in_process_table(process_table, p2);
-    insert_in_process_table(process_table, p3);
-    printf("%d\n", get_from_process_table(process_table, 'A').proc.burst_time);
-    printf("%d\n", get_from_process_table(process_table, 'B').proc.burst_time);
-    printf("%d\n", get_from_process_table(process_table, 'C').proc.burst_time);
-    print_process_table(process_table, 3);
-    return 0;
-}
+/*int main(){*/
+    /*PCB process_table[26];*/
+    /*init_process_table(process_table, 26);*/
+    /*Process p1 = { .pid = 'A', .arrival_time = 0, .burst_time = 4};*/
+    /*Process p2 = { .pid = 'B', .arrival_time = 1, .burst_time = 2};*/
+    /*Process p3 = { .pid = 'C', .arrival_time = 2, .burst_time = 5};*/
+    /*insert_in_process_table(process_table, p1);*/
+    /*insert_in_process_table(process_table, p2);*/
+    /*insert_in_process_table(process_table, p3);*/
+    /*printf("%d\n", get_from_process_table(process_table, 'A').proc.burst_time);*/
+    /*printf("%d\n", get_from_process_table(process_table, 'B').proc.burst_time);*/
+    /*printf("%d\n", get_from_process_table(process_table, 'C').proc.burst_time);*/
+    /*print_process_table(process_table, 3);*/
+    /*return 0;*/
+/*}*/
 
