@@ -42,8 +42,9 @@ char srt(PCB* process_table, Queue *q){
     char pid, lowest_pid=' ';
 	while(!queue_empty(copy_q)){
 		pid = dequeue(copy_q);
-		proc_burst = get_from_process_table(process_table, pid).proc.burst_time;
-		if(proc_burst < min){
+		PCB pcb = get_from_process_table(process_table, pid);
+		proc_burst = pcb.proc.burst_time;
+		if(proc_burst < min && pcb.state != TERMINATED){
 			min = proc_burst;
             lowest_pid = pid;
 		}
@@ -65,12 +66,13 @@ void execute(PCB* process_table, char pid){
 	pcb.proc.burst_time--;
 	if(pcb.proc.burst_time == 0)
 		pcb.state = TERMINATED;
+    set_to_process_table(process_table, pcb, pid);
 }
 
 void scheduling(Process *processes, PCB *process_table, Queue *queue, ExecutionInstants *einstants){
     int time=0;
     char pid;
-    while(1){
+    while(time<20){
         IntList *il = get_arrived_processes(processes, time);
         IntNode *in = il->first;
         if(has_a_process_arrived(il)){
@@ -89,14 +91,21 @@ void scheduling(Process *processes, PCB *process_table, Queue *queue, ExecutionI
     }
 }
 
-/*int main(){*/
-    /*puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");*/
-    /*Instant instants[100];*/
-    /*Process processes[26];*/
-    /*init_processes(processes, 26);*/
-    /*get_processes_from_input(processes);*/
-    /*order_processes_by_arrival(processes);*/
-/*}*/
+int main(){
+    puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");
+    ExecutionInstants *eis = create_execution_instants();
+    Process processes[26];
+    PCB process_table[26];
+    Queue *queue = create_queue();
+    init_processes(processes, 26);
+    init_process_table(process_table, 26);
+    get_processes_from_input(processes);
+    order_processes_by_arrival(processes);
+    print_processes(processes);
+    scheduling(processes, process_table, queue, eis);
+    print_process_table(process_table, 26);
+    construct_gantt_chart(eis);
+}
 
 /*int main(){*/
     /*puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");*/

@@ -34,7 +34,7 @@ void order_processes_by_arrival(Process* processes){
 
 void print_processes(Process* processes){
 	int i=0;
-	printf("\n\nNombre\tLlegada\tRafagas\n");
+	printf("\n\nNombre\tLlegada\tDuracion\n");
 	while(processes[i].pid!='*'){
 		printf("\n%c\t%d\t%d", processes[i].pid, processes[i].arrival_time, processes[i].burst_time);
 		i++;
@@ -80,10 +80,16 @@ PCB get_from_process_table(PCB* process_table, char pid){
 	return process_table[index];
 }
 
+void set_to_process_table(PCB* process_table, PCB pcb, char pid){
+	int index = hash(pid);
+	process_table[index] = pcb;
+}
+
 void print_process_table(PCB *process_table, int size){
 	int i=0;
 	printf("\nNombre\tLlegada\tDuracion\tT.Ret.\tT.Resp.\tT.Esp.\n");
 	while(i<size){
+        if(process_table[i].proc.pid != '*')
 		printf("\n%c\t%d\t%d\t\t%d\t%d\t%d", process_table[i].proc.pid, process_table[i].proc.arrival_time, process_table[i].proc.burst_time, process_table[i].turnaround_time, process_table[i].response_time, process_table[i].waiting_time);
 		i++;
 	}

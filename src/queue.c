@@ -51,6 +51,20 @@ char dequeue(Queue *q){
         return '*'; //Elemento nulo
 }
 
+/*char dequeue_pid(Queue *q, char pid){*/
+    /*if(!queue_empty(q)){ */
+        /*Queue_el *f = q->front; */
+        /*while(f!=NULL){*/
+            /*if(f->pid == pid){*/
+               /*break;*/
+            /*}*/
+            /*f = f->next;  */
+        /*}*/
+        /*return res;*/
+    /*}else*/
+        /*return '*'; //Elemento nulo*/
+/*}*/
+
 Queue *copy(Queue *q){
     if(!queue_empty(q)){
         Queue *copy_q = malloc(sizeof(Queue));
