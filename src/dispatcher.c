@@ -1,7 +1,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "queue.c"
+#include "pid_queue.c"
+
 #include "execution_instant.c"
 #include "process.c"
 #include "int_list.c"
@@ -37,8 +38,8 @@ IntList* get_arrived_processes(Process* processes, int time){
 	return il;
 }
 
-char srt(PCB* process_table, Queue *q){
-    Queue *copy_q = copy(q);
+char srt(PCB* process_table, PidQueue *q){
+    PidQueue *copy_q = copy(q);
 	int min = MAX_BURST_TIME, proc_burst;
     char pid, lowest_pid='-';
 	while(!queue_empty(copy_q)){
@@ -70,7 +71,7 @@ void execute(PCB* process_table, char pid){
     set_to_process_table(process_table, pcb, pid);
 }
 
-void scheduling(Process *processes, PCB *process_table, Queue *queue, ExecutionInstants *einstants){
+void scheduling(Process *processes, PCB *process_table, PidQueue *queue, ExecutionInstants *einstants){
     int time=0;
     char pid='-';
     while(time<MAX_TIME){
@@ -98,7 +99,7 @@ int main(){
     ExecutionInstants *eis = create_execution_instants();
     Process processes[26];
     PCB process_table[26];
-    Queue *queue = create_queue();
+    PidQueue *queue = create_queue();
     init_processes(processes, 26);
     init_process_table(process_table, 26);
     get_processes_from_input(processes);
@@ -108,27 +109,4 @@ int main(){
     print_process_table(process_table, 26);
     construct_gantt_chart(eis);
 }
-
-/*int main(){*/
-    /*puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");*/
-    /*int i;*/
-    /*Instant instants[100];*/
-    /*Process processes[26];*/
-    /*PCB process_table[26];*/
-    /*init_processes(processes, 26);*/
-    /*init_process_table(process_table, 26);*/
-    /*Queue *queue = create_queue();*/
-
-    /*get_processes_from_input(processes);*/
-    /*order_processes_by_arrival(processes);*/
-    /*print_processes(processes);*/
-    /*for(i=0; i<4; i++){*/
-        /*insert_in_process_table(process_table, processes[i]); */
-        /*enqueue(queue, processes[i].pid);*/
-    /*}*/
-    /*IntList *il = get_arrived_processes(processes, 2);*/
-    /*IntNode *in = il->first;*/
-    /*printf("%d\n", in->i);*/
-    /*printf("%d\n", in->next->i);*/
-/*}*/
 

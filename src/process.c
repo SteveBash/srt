@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define EMPTY_PCB { .proc = { .pid = '*', .arrival_time= -1, .burst_time = -1}, .state= TERMINATED, .turnaround_time = -1, .response_time = -1, .waiting_time = -1}
-#define EMPTY_PROCESS { .pid = '*', .arrival_time= -1, .burst_time = -1}
+#define EMPTY_PCB { .proc = { .pid = '-', .arrival_time= -1, .burst_time = -1}, .state= TERMINATED, .turnaround_time = -1, .response_time = -1, .waiting_time = -1}
+#define EMPTY_PROCESS { .pid = '-', .arrival_time= -1, .burst_time = -1}
 
 typedef struct Process{
     char pid;
@@ -18,7 +18,7 @@ void init_processes(Process* processes, int size){
 void order_processes_by_arrival(Process* processes){
 	int i, j, size=0;
 	Process temp;
-	while(processes[size].pid!='*'){
+	while(processes[size].pid!='-'){
 		size++;	
 	}
 	for(i = size- 1; i > 0; i--) {
@@ -35,7 +35,7 @@ void order_processes_by_arrival(Process* processes){
 void print_processes(Process* processes){
 	int i=0;
 	printf("\n\nNombre\tLlegada\tDuracion\n");
-	while(processes[i].pid!='*'){
+	while(processes[i].pid!='-'){
 		printf("\n%c\t%d\t%d", processes[i].pid, processes[i].arrival_time, processes[i].burst_time);
 		i++;
 	}
@@ -89,7 +89,7 @@ void print_process_table(PCB *process_table, int size){
 	int i=0;
 	printf("\nNombre\tLlegada\tDuracion\tT.Ret.\tT.Resp.\tT.Esp.\n");
 	while(i<size){
-        if(process_table[i].proc.pid != '*')
+        if(process_table[i].proc.pid != '-')
 		printf("\n%c\t%d\t%d\t\t%d\t%d\t%d", process_table[i].proc.pid, process_table[i].proc.arrival_time, process_table[i].proc.burst_time, process_table[i].turnaround_time, process_table[i].response_time, process_table[i].waiting_time);
 		i++;
 	}

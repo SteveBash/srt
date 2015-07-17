@@ -7,29 +7,23 @@ typedef struct Queue_el{
     struct Queue_el *next;
 }Queue_el;
 
-typedef struct Queue{
+typedef struct PidQueue{
     Queue_el *front; 
     Queue_el *end; 
-}Queue;
+}PidQueue;
 
-Queue *create_queue();
-int queue_empty(const Queue *q);
-void enqueue(Queue *q, char pid);
-char dequeue(Queue *q);
-Queue *copy(Queue *q);
-
-Queue *create_queue(){
-    Queue *q = malloc(sizeof(Queue));
+PidQueue *create_queue(){
+    PidQueue *q = malloc(sizeof(PidQueue));
     q->front = NULL; 
     q->end = NULL; 
     return q;
 }
 
-int queue_empty(const Queue *q){
+int queue_empty(const PidQueue *q){
    return q->end==NULL; 
 }
 
-void enqueue(Queue *q, char pid){
+void enqueue(PidQueue *q, char pid){
     Queue_el *qel = malloc(sizeof(Queue_el)); 
     qel->pid = pid;
     qel->next = NULL;
@@ -42,13 +36,13 @@ void enqueue(Queue *q, char pid){
      }
 }
 
-char dequeue(Queue *q){
+char dequeue(PidQueue *q){
     if(!queue_empty(q)){ 
         char res = q->end->pid;
         q->end = q->end->next;
         return res;
     }else
-        return '*'; //Elemento nulo
+        return '-'; //Elemento nulo
 }
 
 /*char dequeue_pid(Queue *q, char pid){*/
@@ -65,9 +59,9 @@ char dequeue(Queue *q){
         /*return '*'; //Elemento nulo*/
 /*}*/
 
-Queue *copy(Queue *q){
+PidQueue *copy(PidQueue *q){
     if(!queue_empty(q)){
-        Queue *copy_q = malloc(sizeof(Queue));
+        PidQueue *copy_q = malloc(sizeof(PidQueue));
         Queue_el *qel = malloc(sizeof(Queue_el)); 
         qel->pid = q->end->pid;
         qel->next = NULL;
