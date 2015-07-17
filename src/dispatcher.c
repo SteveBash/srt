@@ -71,6 +71,33 @@ void execute(PCB* process_table, char pid){
     set_to_process_table(process_table, pcb, pid);
 }
 
+void calculate_turnaround_time(PCB* process_table, char pid, int time){
+	PCB pcb = get_from_process_table(process_table, pid);
+    pcb.turnaround_time = time - pcb.proc.arrival_time; 
+    set_to_process_table(process_table, pcb, pid);
+}
+
+void calculate_response_time(PCB* process_table, char pid, int time){
+	PCB pcb = get_from_process_table(process_table, pid);
+    if(pcb.response_time==-1){
+        pcb.response_time = time - pcb.proc.arrival_time; 
+        set_to_process_table(process_table, pcb, pid);
+    }
+}
+
+void calculate_waiting_time(PCB* process_table, char executing_pid, PidQueue *copy_q){
+    int i=0;
+    char pid;
+	while(!queue_empty(copy_q)){
+		pid = dequeue(copy_q);
+		PCB pcb = get_from_process_table(process_table, pid);
+        if(pcb.state!=TERMINATED && pcb.proc.pid != executing_pid){
+            pcb.waiting_time++;
+            set_to_process_table(process_table, pcb, pid);
+        }
+	}
+}
+
 void scheduling(Process *processes, PCB *process_table, PidQueue *queue, ExecutionInstants *einstants){
     int time=0;
     char pid='-';
@@ -85,10 +112,14 @@ void scheduling(Process *processes, PCB *process_table, PidQueue *queue, Executi
             }
             pid = srt(process_table, queue);
         }else if(is_process_terminated(process_table, pid)){
+            calculate_turnaround_time(process_table, pid, time);
             pid = srt(process_table, queue);
         }
-        if(pid!='-')
+        if(pid!='-'){
             execute(process_table, pid);
+            calculate_response_time(process_table, pid, time);
+        }
+        calculate_waiting_time(process_table, pid, copy(queue));
         execution_instant_add(einstants, pid, time);
         time++;
     }

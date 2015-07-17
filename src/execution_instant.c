@@ -39,7 +39,7 @@ void execution_instant_add(ExecutionInstants *eis, char pid, int time){
 }
 
 void construct_gantt_chart(ExecutionInstants *einstants){
-	printf("Diagrama Gantt:\n");	
+	printf("Diagrama Gantt:\n\n");	
     ExecutionInstant *einstant = einstants->first;
     ExecutionInstant *itemp = einstant;
 	while(itemp!=NULL){

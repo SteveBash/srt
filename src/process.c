@@ -70,7 +70,7 @@ int hash(char pid){
 }
 
 void insert_in_process_table(PCB* process_table, Process proc){
-	PCB pcb = { .proc = proc, .state = READY, .turnaround_time = -1, .response_time = -1, .waiting_time = -1}; 
+	PCB pcb = { .proc = proc, .state = READY, .turnaround_time = 0, .response_time = -1, .waiting_time = 0}; 
 	int index = hash(proc.pid);
 	process_table[index] = pcb;
 }
