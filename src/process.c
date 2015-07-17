@@ -87,10 +87,10 @@ void set_to_process_table(PCB* process_table, PCB pcb, char pid){
 
 void print_process_table(PCB *process_table, int size){
 	int i=0;
-	printf("\nNombre\tLlegada\tDuracion\tT.Ret.\tT.Resp.\tT.Esp.\n");
+	printf("\nNombre\tT.Ret.\tT.Resp.\tT.Esp.\n");
 	while(i<size){
         if(process_table[i].proc.pid != '-')
-		printf("\n%c\t%d\t%d\t\t%d\t%d\t%d", process_table[i].proc.pid, process_table[i].proc.arrival_time, process_table[i].proc.burst_time, process_table[i].turnaround_time, process_table[i].response_time, process_table[i].waiting_time);
+		printf("\n%c\t%d\t%d\t%d", process_table[i].proc.pid, process_table[i].turnaround_time, process_table[i].response_time, process_table[i].waiting_time);
 		i++;
 	}
 	puts("\n");

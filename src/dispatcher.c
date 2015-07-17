@@ -98,6 +98,28 @@ void calculate_waiting_time(PCB* process_table, char executing_pid, PidQueue *co
 	}
 }
 
+void print_calculate_averages(PCB* process_table, PidQueue *copy_q){
+    float average_response_time = 0;
+    float average_turnaround_time = 0;
+    float average_waiting_time = 0;
+    int total_proc = 0;
+    char pid;
+	while(!queue_empty(copy_q)){
+		pid = dequeue(copy_q);
+        total_proc++;
+		PCB pcb = get_from_process_table(process_table, pid);
+        average_response_time += pcb.response_time;
+        average_waiting_time += pcb.waiting_time;
+        average_turnaround_time  += pcb.turnaround_time;
+	}
+    average_turnaround_time/= total_proc; 
+    average_waiting_time/= total_proc; 
+    average_response_time/= total_proc; 
+    printf("\nPromedio de tiempo de retorno: %.2f", average_turnaround_time);
+    printf("\nPromedio de tiempo de respuesta: %.2f", average_response_time);
+    printf("\nPromedio de tiempo de espera: %.2f\n\n", average_waiting_time);
+}
+
 void scheduling(Process *processes, PCB *process_table, PidQueue *queue, ExecutionInstants *einstants){
     int time=0;
     char pid='-';
@@ -138,6 +160,7 @@ int main(){
     print_processes(processes);
     scheduling(processes, process_table, queue, eis);
     print_process_table(process_table, 26);
+    print_calculate_averages(process_table, copy(queue));
     construct_gantt_chart(eis);
 }
 
