@@ -2,6 +2,7 @@
 #include "../src/dispatcher.c"
 
 void _init_test_processes(Process *processes){
+
     init_processes(processes, 26);
     processes[0] = (Process){ .pid = 'A', .arrival_time = 0, .burst_time = 4};
     processes[1] = (Process){ .pid = 'B', .arrival_time = 0, .burst_time = 2};

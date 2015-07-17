@@ -1,31 +1,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "instant.c"
+#include "execution_instant.c"
 
-void construct_gantt_chart(Instant *clock, int size){
+void construct_gantt_chart(ExecutionInstants *einstants){
 	printf("Diagrama Gantt:\n");	
-	int i=0;
-	while(clock[i].time!=-1){
-		printf("|%2d ", clock[i].time);
-		i++;
+    ExecutionInstant *einstant = einstants->first;
+    ExecutionInstant *itemp = einstant;
+	while(itemp!=NULL){
+		printf("|%2d ", itemp->time);
+        itemp = itemp->next;
 	}
-	i = 0;
+	itemp = einstant;
 	printf("|\n");
-	while(clock[i].time!=-1){
-		printf("| %c ", clock[i].pid);
-		i++;
+	while(itemp!=NULL){
+		printf("| %c ", itemp->pid);
+        itemp = itemp->next;
 	}
 	printf("|\n");
 }
-
-/*int main(){*/
-	/*Instant clock[100];	*/
-	/*init_clock(clock, 100);*/
-	/*add_instant(clock, 'A', 0);*/
-	/*add_instant(clock, 'B', 1);*/
-	/*add_instant(clock, 'C', 2);*/
-	/*construct_gantt_chart(clock, 100);*/
-/*}*/
-
 

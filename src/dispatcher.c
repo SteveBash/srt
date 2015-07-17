@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "queue.c"
-#include "instant.c"
+#include "execution_instant.c"
 #include "process.c"
 #include "int_list.c"
 
 #define MAX_PROCESSES 26
-int time = 0;
+#define MAX_BURST_TIME 10000
 
 void get_processes_from_input(Process* processes){
 	int i, processes_total;
@@ -36,31 +36,10 @@ IntList* get_arrived_processes(Process* processes, int time){
 	return il;
 }
 
-int has_a_process_arrived(IntList *index_list){
-    return !int_list_empty(index_list);
-}
-
-int has_process_terminated(PCB* process_table, char pid){
-	PCB pcb = get_from_process_table(process_table, pid);
-	return pcb.state == TERMINATED? 1:0;
-}
-
-int is_process_executing(PCB* process_table, char pid){
-	PCB pcb = get_from_process_table(process_table, pid);
-	return pcb.state == RUNNING? 1:0;
-}
-
-void execute(PCB* process_table, char pid){
-	PCB pcb = get_from_process_table(process_table, pid);
-	pcb.proc.burst_time--;
-	if(pcb.proc.burst_time == 0)
-		pcb.state = TERMINATED;
-}
-
 char srt(PCB* process_table, Queue *q){
     Queue *copy_q = copy(q);
-	int min = 1000, proc_burst;
-    char pid, lowest_pid;
+	int min = MAX_BURST_TIME, proc_burst;
+    char pid, lowest_pid=' ';
 	while(!queue_empty(copy_q)){
 		pid = dequeue(copy_q);
 		proc_burst = get_from_process_table(process_table, pid).proc.burst_time;
@@ -72,30 +51,43 @@ char srt(PCB* process_table, Queue *q){
 	return lowest_pid;
 }
 
-/*void scheduling(){*/
-    /*while(1){*/
-        /*int *indexes = get_arrived_processes(processes, time);*/
-        /*char pid;*/
-        /*if(has_a_process_arrived(indexes)){*/
-            /*insert_in_process_table(process_table, processes[indexes]);*/
-            /*enqueue(queue, processes[indexes].pid);*/
-            /*pid = srt(queue);*/
-            /*execute(process_table, pid);*/
-            /*add_instant(instants, pid, time);*/
-        /*}else if(has_process_terminated(pid)){*/
-            /*pid = srt(queue);*/
-            /*execute(process_table, pid);*/
-            /*add_instant(instants, pid, time);*/
-        /*}else if(is_process_executing(pid)){*/
-            /*execute(process_table, pid);	*/
-            /*add_instant(instants, pid, time);*/
-        /*}else{No hay proceso por ejecutar*/
-            /*execute(process_table, pid);	*/
-            /*add_instant(instants, ' ', time);*/
-        /*}*/
-        /*time++;*/
-    /*}*/
-/*}*/
+int has_a_process_arrived(IntList *index_list){
+    return !int_list_empty(index_list);
+}
+
+int is_process_terminated(PCB* process_table, char pid){
+	PCB pcb = get_from_process_table(process_table, pid);
+	return pcb.proc.burst_time == 0;
+}
+
+void execute(PCB* process_table, char pid){
+	PCB pcb = get_from_process_table(process_table, pid);
+	pcb.proc.burst_time--;
+	if(pcb.proc.burst_time == 0)
+		pcb.state = TERMINATED;
+}
+
+void scheduling(Process *processes, PCB *process_table, Queue *queue, ExecutionInstants *einstants){
+    int time=0;
+    char pid;
+    while(1){
+        IntList *il = get_arrived_processes(processes, time);
+        IntNode *in = il->first;
+        if(has_a_process_arrived(il)){
+            while(in!=NULL){
+                insert_in_process_table(process_table, processes[in->i]);
+                enqueue(queue, processes[in->i].pid);
+                in = in->next; 
+            }
+            pid = srt(process_table, queue);
+        }else if(is_process_terminated(process_table, pid)){
+            pid = srt(process_table, queue);
+        }
+        execute(process_table, pid);
+        execution_instant_add(einstants, pid, time);
+        time++;
+    }
+}
 
 /*int main(){*/
     /*puts("\nSimulacion del algoritmo SRT(Shortest remaining time)\n");*/
