@@ -36,11 +36,8 @@ IntList* get_arrived_processes(Process* processes, int time){
 	return il;
 }
 
-int has_a_process_arrived(int* indexes){
-	if(indexes[0] != -1)
-		return 1;
-	else
-		return 0;
+int has_a_process_arrived(IntList *index_list){
+    return !int_list_empty(index_list);
 }
 
 int has_process_terminated(PCB* process_table, char pid){
@@ -63,15 +60,16 @@ void execute(PCB* process_table, char pid){
 char srt(PCB* process_table, Queue *q){
     Queue *copy_q = copy(q);
 	int min = 1000, proc_burst;
-    char pid;
+    char pid, lowest_pid;
 	while(!queue_empty(copy_q)){
 		pid = dequeue(copy_q);
 		proc_burst = get_from_process_table(process_table, pid).proc.burst_time;
 		if(proc_burst < min){
 			min = proc_burst;
+            lowest_pid = pid;
 		}
 	}
-	return pid;
+	return lowest_pid;
 }
 
 /*void scheduling(){*/
