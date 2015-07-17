@@ -3,11 +3,16 @@
 
 * Compilar 
 
-        make 
+        cd src
+        make dispatcher 
 
 * Ejecutar los ejemplos 
 
-        ./srt < ej1.txt 
+        ./dispatcher < ../ej1.txt 
 
-        ./srt < ej2.txt
+        ./dispatcher < ../ej2.txt
+
+        ./dispatcher < ../ej3.txt
+
+        ./dispatcher < ../ej4.txt
 
