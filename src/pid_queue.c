@@ -81,20 +81,3 @@ PidQueue *copy(PidQueue *q){
     else return NULL;
 }
 
-/*int main(int argc, char **argv){*/
-     /*Queue *q = create_queue();*/
-     /*enqueue(q, '1');*/
-     /*enqueue(q, '2');*/
-     /*enqueue(q, '3');*/
-     /*Queue *copy_q = copy(q);*/
-     /*printf("%c\n", dequeue(copy_q));*/
-     /*printf("%c\n", dequeue(copy_q));*/
-     /*printf("%c\n", dequeue(copy_q));*/
-     /*printf("%c\n", dequeue(copy_q));*/
-     /*printf("%c\n", dequeue(q));*/
-     /*printf("%c\n", dequeue(q));*/
-     /*printf("%c\n", dequeue(q));*/
-     /*printf("%c\n", dequeue(q));*/
-     /*return 0;*/
-/*}*/
-
