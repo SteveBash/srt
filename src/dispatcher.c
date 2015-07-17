@@ -7,6 +7,7 @@
 #include "int_list.c"
 
 #define MAX_PROCESSES 26
+#define MAX_TIME 40
 #define MAX_BURST_TIME 10000
 
 void get_processes_from_input(Process* processes){
@@ -39,7 +40,7 @@ IntList* get_arrived_processes(Process* processes, int time){
 char srt(PCB* process_table, Queue *q){
     Queue *copy_q = copy(q);
 	int min = MAX_BURST_TIME, proc_burst;
-    char pid, lowest_pid=' ';
+    char pid, lowest_pid='-';
 	while(!queue_empty(copy_q)){
 		pid = dequeue(copy_q);
 		PCB pcb = get_from_process_table(process_table, pid);
@@ -71,8 +72,8 @@ void execute(PCB* process_table, char pid){
 
 void scheduling(Process *processes, PCB *process_table, Queue *queue, ExecutionInstants *einstants){
     int time=0;
-    char pid;
-    while(time<20){
+    char pid='-';
+    while(time<MAX_TIME){
         IntList *il = get_arrived_processes(processes, time);
         IntNode *in = il->first;
         if(has_a_process_arrived(il)){
@@ -85,7 +86,8 @@ void scheduling(Process *processes, PCB *process_table, Queue *queue, ExecutionI
         }else if(is_process_terminated(process_table, pid)){
             pid = srt(process_table, queue);
         }
-        execute(process_table, pid);
+        if(pid!='-')
+            execute(process_table, pid);
         execution_instant_add(einstants, pid, time);
         time++;
     }
